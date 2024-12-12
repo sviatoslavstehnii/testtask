@@ -1,3 +1,4 @@
+import datetime
 import os
 import redis
 from teleredis import RedisSession
@@ -34,14 +35,41 @@ class TelegramService:
         if not await client.is_user_authorized():
             await client.sign_in(phone=phone_number, code=code, phone_code_hash=phone_code_hash)   
 
-    async def print_chats(self, identifier) -> None:
+    async def get_dialogs(self, identifier) -> list[dict]:
         client = self.get_client(identifier)
         await client.connect()
         if await client.is_user_authorized():
             non_archived = await client.get_dialogs(archived=False)
-            for dialog in non_archived:
-                async for message in client.iter_messages(dialog):
-                    print(f"[{message.date}] {message.sender_id}: {message.text}")
-                break
+            dialogs_json = [
+                {
+                    "id": dialog.id,
+                    "name": dialog.name,
+                    "unread_count": dialog.unread_count,
+                    "is_group": dialog.is_group,
+                    "is_channel": dialog.is_channel,
+                    "is_user": dialog.is_user,
+                }
+                for dialog in non_archived
+            ]
+            return dialogs_json
+        return []
+    
+    async def get_messages(self, identifier, dialog_name, offset) -> list[dict]:
+        client = self.get_client(identifier)
+        messages = []
+        await client.connect()
+        if await client.is_user_authorized():
+            async for msg in client.iter_messages(dialog_name, limit=10, add_offset=offset):
+                message_json = {
+                    "message_id": msg.id,
+                    "sender_id": msg.sender_id,
+                    "text": msg.text if msg.text else "",
+                    }
+                messages.append(message_json)
+            return messages
+        return []
+    
+
+
 
     

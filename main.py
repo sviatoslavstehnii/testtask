@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api_service import APIService
+from api import API
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -8,8 +8,7 @@ api_id = config["API_ID"]
 api_hash = config["API_HASH"]
 
 
-api_service = APIService(api_id, api_hash)
-
+api_service = API(api_id, api_hash)
 app = api_service.app
 
 if __name__ == "__main__":

@@ -1,9 +1,10 @@
 import uuid
 from fastapi import FastAPI, HTTPException
-from telegram_service import TelegramService
+from fastapi.responses import JSONResponse
+from services.telegram_service import TelegramService
 
 
-class APIService:
+class API:
 
     def __init__(self, api_id, api_hash):
         self.app = FastAPI()
@@ -34,7 +35,13 @@ class APIService:
             except Exception as e:
                 raise HTTPException(status_code=400, detail=str(e))
             
-        @self.app.get("/print_data")
-        async def sign_in(user_id: str):
-            await self.tg_service.print_chats(user_id)
+        @self.app.get("/dialogs/{user_id}")
+        async def get_dialogs(user_id: str):
+            dialogs = await self.tg_service.get_dialogs(user_id)
+            return JSONResponse(content=dialogs)
+        
+        @self.app.get("/messages/{user_id}")
+        async def get_messages(user_id: str, dialog_name: int, offset:int = 0):
+            messages = await self.tg_service.get_messages(user_id, dialog_name, offset)
+            return JSONResponse(content=messages)
         
