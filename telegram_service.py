@@ -1,4 +1,6 @@
 import os
+import redis
+from teleredis import RedisSession
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
 
@@ -9,13 +11,14 @@ class TelegramService:
         self.api_id = api_id
         self.api_hash = api_hash
         self.session_dir = session_dir
+        self.redis_connector = redis.Redis(host='localhost', port=6380, db=0, decode_responses=False)
 
         if not os.path.exists(session_dir):
             os.makedirs(session_dir)
 
     def get_client(self, identifier):
-        session_path = os.path.join("sessions/", f"{identifier}.session")
-        return TelegramClient(session_path, self.api_id, self.api_hash)
+        session = RedisSession(identifier, self.redis_connector)  
+        return TelegramClient(session, self.api_id, self.api_hash)
 
     async def send_code(self, user_id, phone_number) -> None|str:
         client = self.get_client(user_id)
@@ -34,7 +37,6 @@ class TelegramService:
     async def print_chats(self, identifier) -> None:
         client = self.get_client(identifier)
         await client.connect()
-        print("hello")
         if await client.is_user_authorized():
             non_archived = await client.get_dialogs(archived=False)
             for dialog in non_archived:
