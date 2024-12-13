@@ -1,4 +1,6 @@
+from typing import Annotated
 import uuid
+from models.api_models import PhoneNumber, TGSignIn
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
@@ -21,7 +23,8 @@ class API:
     def setup_routes(self):
         
         @self.app.post("/send_code")
-        async def send_code(phone_number: str):
+        async def send_code(body: PhoneNumber):
+            phone_number = body.phone_number
             user_id = str(uuid.uuid4()) 
 
             phone_code_hash = await self.tg_service.send_code(user_id, phone_number)
@@ -32,10 +35,10 @@ class API:
                 return {"user_id": user_id, "message": "User is already authorized"}
 
         @self.app.post("/sign_in")
-        async def sign_in(user_id: str, phone_number: str, code: str, phone_code_hash: str):
+        async def sign_in(body: TGSignIn):
             try:
-                await self.tg_service.sign_in(user_id, phone_number, code, phone_code_hash)
-                return {"message": f"Successfully signed in as {phone_number}"}
+                await self.tg_service.sign_in(body.user_id, body.phone_number, body.code, body.phone_code_hash)
+                return {"message": f"Successfully signed in as {body.phone_number}"}
             except Exception as e:
                 raise HTTPException(status_code=400, detail=str(e))
             
@@ -58,7 +61,7 @@ class API:
             return {"res":"created"}
 
         @self.app.post('/login')
-        def login(request:OAuth2PasswordRequestForm = Depends()):
+        def login(request:User):
             user = self.db["users"].find_one({"username":request.username})
             if not user:
                 raise HTTPException(status_code=404, detail = f'No user found with this {request.username} username')
