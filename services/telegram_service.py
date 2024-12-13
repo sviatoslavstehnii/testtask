@@ -8,14 +8,11 @@ from telethon.errors import SessionPasswordNeededError
 
 class TelegramService:
 
-    def __init__(self, api_id, api_hash, session_dir="sessions"):
+    def __init__(self, api_id, api_hash):
         self.api_id = api_id
         self.api_hash = api_hash
-        self.session_dir = session_dir
         self.redis_connector = redis.Redis(host='localhost', port=6380, db=0, decode_responses=False)
 
-        if not os.path.exists(session_dir):
-            os.makedirs(session_dir)
 
     def get_client(self, identifier):
         session = RedisSession(identifier, self.redis_connector)  

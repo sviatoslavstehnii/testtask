@@ -1,15 +1,31 @@
 from fastapi import FastAPI
-from api import API
+from fastapi.middleware.cors import CORSMiddleware
+from pymongo import MongoClient
 from dotenv import dotenv_values
+from api import API
 
 config = dotenv_values(".env")
 
 api_id = config["API_ID"]
 api_hash = config["API_HASH"]
+db_password = config["DB_PASSWORD"]
 
 
-api_service = API(api_id, api_hash)
-app = api_service.app
+uri = f"mongodb+srv://sviatkostehnii:{db_password}@cluster0.iswe6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+port = 8000
+client = MongoClient(uri, port)
+db = client["User"]
+
+api = API(api_id, api_hash, db)
+app = api.app
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 if __name__ == "__main__":
     import uvicorn
