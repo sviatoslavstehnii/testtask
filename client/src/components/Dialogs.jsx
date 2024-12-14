@@ -21,7 +21,19 @@ const Dialogs = () => {
           );
         }
 
-        const response = await fetch(`http://localhost:8000/dialogs/${userId}`);
+        const authToken = localStorage.getItem("token");
+        if (!authToken) {
+          throw new Error("Auth token is missing. Please log in.");
+        }
+
+        const response = await fetch(
+          `http://localhost:8000/dialogs/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch dialogs.");
         }

@@ -21,8 +21,18 @@ const Messages = () => {
         );
       }
 
+      const authToken = localStorage.getItem("token");
+      if (!authToken) {
+        throw new Error("Auth token is missing. Please log in.");
+      }
+
       const response = await fetch(
-        `http://localhost:8000/messages/${userId}?dialog_name=${id}&offset=${newOffset}`
+        `http://localhost:8000/messages/${userId}?dialog_name=${id}&offset=${newOffset}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch messages.");

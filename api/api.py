@@ -23,7 +23,7 @@ class API:
     def setup_routes(self):
         
         @self.app.post("/send_code")
-        async def send_code(body: PhoneNumber):
+        async def send_code(body: PhoneNumber, current_user: dict = Depends(get_current_user)):
             phone_number = body.phone_number
             user_id = str(uuid.uuid4()) 
 
@@ -35,7 +35,7 @@ class API:
                 return {"user_id": user_id, "message": "User is already authorized"}
 
         @self.app.post("/sign_in")
-        async def sign_in(body: TGSignIn):
+        async def sign_in(body: TGSignIn, current_user: dict = Depends(get_current_user)):
             try:
                 await self.tg_service.sign_in(body.user_id, body.phone_number, body.code, body.phone_code_hash)
                 return {"message": f"Successfully signed in as {body.phone_number}"}
@@ -43,12 +43,12 @@ class API:
                 raise HTTPException(status_code=400, detail=str(e))
             
         @self.app.get("/dialogs/{user_id}")
-        async def get_dialogs(user_id: str):
+        async def get_dialogs(user_id: str, current_user: dict = Depends(get_current_user)):
             dialogs = await self.tg_service.get_dialogs(user_id)
             return JSONResponse(content=dialogs)
         
         @self.app.get("/messages/{user_id}")
-        async def get_messages(user_id: str, dialog_name: int, offset:int = 0):
+        async def get_messages(user_id: str, dialog_name: int, offset:int = 0, current_user: dict = Depends(get_current_user)):
             messages = await self.tg_service.get_messages(user_id, dialog_name, offset)
             return JSONResponse(content=messages)
         

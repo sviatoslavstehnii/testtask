@@ -11,6 +11,8 @@ const PhoneVerification = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+
   const handlePhoneChange = (e) => {
     setPhoneNumber(e.target.value);
   };
@@ -30,6 +32,7 @@ const PhoneVerification = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ phone_number: phoneNumber }),
       });
@@ -61,6 +64,7 @@ const PhoneVerification = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           user_id: userId,
