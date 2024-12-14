@@ -43,6 +43,7 @@ const Login = () => {
           username: "",
           password: "",
         });
+        navigate("/");
       }
     } catch (error) {
       setError(error.message);

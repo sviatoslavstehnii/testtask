@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./PhoneVerification.css";
 
 const PhoneVerification = () => {
@@ -8,6 +9,7 @@ const PhoneVerification = () => {
   const [userId, setUserId] = useState(null);
   const [phoneCodeHash, setPhoneCodeHash] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handlePhoneChange = (e) => {
     setPhoneNumber(e.target.value);
@@ -74,6 +76,7 @@ const PhoneVerification = () => {
         console.log(data.message);
         localStorage.setItem("userId", userId);
         setError("");
+        navigate("/");
       } else {
         setError(data.message || "Error verifying code.");
       }

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 import "./Dialogs.css";
 
 const Dialogs = () => {
   const [dialogs, setDialogs] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
 
@@ -45,6 +48,9 @@ const Dialogs = () => {
 
   return (
     <div className="dialogs-container">
+      <button onClick={() => navigate("/")} className="back-btn">
+        Home
+      </button>
       {dialogs.length > 0 ? (
         dialogs.map((dialog) => (
           <Link

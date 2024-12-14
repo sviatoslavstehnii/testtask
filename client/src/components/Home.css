@@ -5,53 +5,99 @@
   height: 100vh;
   flex-direction: column;
   text-align: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.login-btn,
-.logout-btn {
-  padding: 10px 20px;
-  background-color: #ff7f50;
-  border: none;
-  color: white;
-  cursor: pointer;
-  margin-top: 20px;
-  border-radius: 5px;
+.authenticated-section,
+.unauthenticated-section {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-btn:hover,
-.logout-btn:hover {
-  background-color: #e65c3d;
-}
-
-.home-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex-direction: column;
-  text-align: center;
-}
-
-.login-btn,
-.logout-btn,
-.connect-tg-btn,
-.remove-id-btn {
-  padding: 10px 20px;
-  background-color: #ff7f50;
-  border: none;
-  color: white;
-  cursor: pointer;
-  margin-top: 20px;
-  border-radius: 5px;
-}
-
-.login-btn:hover,
-.logout-btn:hover,
-.connect-tg-btn:hover,
-.remove-id-btn:hover {
-  background-color: #e65c3d;
+h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 h3 {
+  font-size: 18px;
+  color: #555;
   margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.logout-btn {
+  background-color: #ff4b5c;
+}
+
+.logout-btn:hover {
+  background-color: #e04150;
+}
+
+.connect-tg-btn {
+  background-color: #34a853;
+}
+
+.connect-tg-btn:hover {
+  background-color: #2b8e44;
+}
+
+.remove-id-btn {
+  background-color: #fbbc05;
+}
+
+.remove-id-btn:hover {
+  background-color: #e0a704;
+}
+
+.dialogs-btn {
+  background-color: #4267b2;
+}
+
+.dialogs-btn:hover {
+  background-color: #365899;
+}
+
+.login-btn {
+  background-color: #007bff;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
 }
