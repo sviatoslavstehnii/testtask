@@ -1,0 +1,59 @@
+.dialogs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.dialog-card {
+  text-decoration: none;
+  color: #fff;
+  background-color: #ff7f50;
+  width: 300px;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.dialog-card:hover {
+  transform: translateY(-5px);
+}
+
+.dialog-name {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.dialog-info {
+  font-size: 0.9em;
+  color: #ffe0b2;
+}
+
+.unread-count {
+  font-size: 0.9em;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.loading {
+  color: #ff7f50;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
+.no-dialogs {
+  color: gray;
+  font-size: 1.2em;
+  margin-top: 20px;
+}
