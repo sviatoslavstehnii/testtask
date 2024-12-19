@@ -56,6 +56,7 @@ class TelegramService:
         messages = []
         await client.connect()
         if await client.is_user_authorized():
+            await client.get_dialogs(archived=False)
             async for msg in client.iter_messages(dialog_name, limit=10, add_offset=offset):
                 message_json = {
                     "message_id": msg.id,
